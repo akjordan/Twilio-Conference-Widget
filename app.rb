@@ -7,9 +7,20 @@ def get_or_post(path, opts={}, &block)
   post(path, opts, &block)
 end
 
-# Home page and reference
-get '/' do
+# Base URL
+get_or_post '/' do
+  TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
+  TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
+  TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
+  
+  if !(TWILIO_ACCOUNT_SID && TWILIO_AUTH_TOKEN && TWILIO_APP_SID)
+    return "Please run configure.rb before trying to do this!"
+  end
   @title = "Conference Line"
+  capability = Twilio::Util::Capability.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+  capability.allow_client_outgoing(TWILIO_APP_SID)
+  capability.allow_client_incoming('twilioRubyHackpack')
+  @token = capability.generate
   erb :client
 end
 
@@ -55,21 +66,4 @@ get '/listener' do
     end
   end
   response.text
-end
-
-# Twilio Client URL
-get_or_post '/client/?' do
-  TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
-  TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
-  TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
-  
-  if !(TWILIO_ACCOUNT_SID && TWILIO_AUTH_TOKEN && TWILIO_APP_SID)
-    return "Please run configure.rb before trying to do this!"
-  end
-  @title = "Twilio Client"
-  capability = Twilio::Util::Capability.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-  capability.allow_client_outgoing(TWILIO_APP_SID)
-  capability.allow_client_incoming('twilioRubyHackpack')
-  @token = capability.generate
-  erb :client
 end
