@@ -66,7 +66,7 @@ get_or_post '/voice' do
 end
 
 # Dials in a caller as a particpant
-get '/participant' do
+get_or_post '/participant' do
   response = Twilio::TwiML::Response.new do |r|
     r.Dial do |d|
       d.Conference 'democonference', :startConferenceOnEnter => 'false', :beep => 'true' 
@@ -76,7 +76,7 @@ get '/participant' do
 end
 
 # Dials in a caller as a silent listener who is muted and who's arrival is not announced 
-get '/listener' do
+get_or_post '/listener' do
   response = Twilio::TwiML::Response.new do |r|
     r.Dial do |d|
       d.Conference 'democonference', :startConferenceOnEnter => 'false', \
