@@ -26,7 +26,7 @@ end
 
 # Base URL
 get_or_post '/' do
-  #protected!
+  protected!
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
   TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
@@ -68,6 +68,7 @@ end
 # Dials in a caller as a particpant
 get_or_post '/participant' do
   response = Twilio::TwiML::Response.new do |r|
+    r.Say 'You are entering the Twilio Sales Conference'
     r.Dial do |d|
       d.Conference 'democonference', :startConferenceOnEnter => 'false', :beep => 'true' 
     end
@@ -78,6 +79,7 @@ end
 # Dials in a caller as a silent listener who is muted and who's arrival is not announced 
 get_or_post '/listener' do
   response = Twilio::TwiML::Response.new do |r|
+    r.Say 'You are entering the Twilio Sales Conference as a listener'
     r.Dial do |d|
       d.Conference 'democonference', :startConferenceOnEnter => 'false', \
                     :beep => 'false', :muted => 'true'
@@ -88,6 +90,21 @@ end
 
 # Makes an API call to bring in a particpant
 post '/dialparticipant' do
+#protected!
+
+TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
+TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
+
+@client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+puts request.base_url << "/listener"
+
+@account = @client.account
+@call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/participant"})
+puts @call
+
+redirect to('/')
 
 end
 
