@@ -10,7 +10,7 @@ end
 # Home page and reference
 get '/' do
   @title = "Conference Line"
-  erb :home
+  erb :client
 end
 
 # Primary voice URL for moderators or external callers
