@@ -16,7 +16,7 @@ end
 # Primary voice URL for moderators or external callers
 get_or_post '/voice' do
   # Check to see if the request is coming from a known "moderator" number
-  if (params[:From] = '+18776607888')
+  if (params[:From] = ENV['TWILIO_CALLER_ID'])
     response = Twilio::TwiML::Response.new do |r|
       r.Say 'You are entering the Twilio Sales Conference as a Moderator'
       r.Dial do |d|
