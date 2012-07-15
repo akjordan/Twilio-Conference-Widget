@@ -26,7 +26,7 @@ end
 
 # Base URL
 get_or_post '/' do
-  protected!
+  #protected!
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
   TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
@@ -98,7 +98,7 @@ TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
 
 @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-puts request.base_url << "/listener"
+puts request.base_url << "/participant"
 
 @account = @client.account
 @call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/participant"})
@@ -123,7 +123,5 @@ puts request.base_url << "/listener"
 @account = @client.account
 @call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/listener"})
 puts @call
-
-redirect to('/')
 
 end
