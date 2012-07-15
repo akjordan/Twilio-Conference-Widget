@@ -26,7 +26,7 @@ end
 
 # Base URL
 get_or_post '/' do
-  protected!
+  #protected!
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
   TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
@@ -84,4 +84,27 @@ get '/listener' do
     end
   end
   response.text
+end
+
+# Makes an API call to bring in a particpant
+post '/dialparticipant' do
+
+end
+
+# Makes an API call to bring in a listener
+post '/diallistener' do
+#protected!
+
+TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
+TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
+
+@client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+@account = @client.account
+@call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => 'http://radiant-fire-6274.herokuapp.com/listener'})
+puts @call
+
+redirect to('/')
+
 end
