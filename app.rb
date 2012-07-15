@@ -7,8 +7,26 @@ def get_or_post(path, opts={}, &block)
   post(path, opts, &block)
 end
 
+# Simple rack auth
+helpers do
+
+  def protected!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == twilio, client]
+  end
+
+end
+
 # Base URL
 get_or_post '/' do
+  protected!
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
   TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
