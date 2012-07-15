@@ -101,8 +101,10 @@ TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
 
 @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
+puts request.base_url << "/listener"
+
 @account = @client.account
-@call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => 'http://radiant-fire-6274.herokuapp.com/listener'})
+@call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/listener"})
 puts @call
 
 redirect to('/')
