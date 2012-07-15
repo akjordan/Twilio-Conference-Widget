@@ -44,9 +44,9 @@
 	function hangup() {
 		Twilio.Device.disconnectAll();
 	}
-    $('#number_form').submit(function(e) {
-	    e.preventDefault();
+    $('#number_form').submit() {
 
+	    alert('Handler for .submit() called.')
 	    // isolate the phone_number_input field so it can be submitted via AJAX to the PHP backend
 	    var post_data = {number: $('#number_input').val()};
 	    
