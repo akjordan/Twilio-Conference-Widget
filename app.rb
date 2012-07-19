@@ -1,16 +1,10 @@
 require 'sinatra'
 require 'twilio-ruby'
 
-Thin::Logging::log "message"
 # A hack around multiple routes in Sinatra
 def get_or_post(path, opts={}, &block)
   get(path, opts, &block)
   post(path, opts, &block)
-end
-
-
-configure do
-  enable :logging, :dump_errors, :raise_errors, :show_exceptions
 end
 
 # Simple rack auth
@@ -128,14 +122,7 @@ TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
 puts request.base_url << "/listener"
 
 @account = @client.account
-begin
-  @call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/listener"})
-
-rescue Exception => e
-  Thin::Logging::log e.code
-  Thin::Logging::log @client.last_request
-end
-
+@call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/listener"})
 puts @call
 
 end
