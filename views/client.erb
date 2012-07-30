@@ -9,6 +9,7 @@
 	</script>
 	<link href="//static0.twilio.com/packages/quickstart/client.css"
 		type="text/css" rel="stylesheet" />
+	<link href="/style.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
 
 	/* Create the Client with a Capability Token */
@@ -44,7 +45,7 @@
 	function hangup() {
 		Twilio.Device.disconnectAll();
 	}
-	
+
     $(function(){
 	    $('#listener_form').submit(function(e) {
 	    	e.preventDefault();
@@ -57,12 +58,26 @@
 
 		    return false;
 	    });
+	    
+	    $('#participant_form').submit(function(e) {
+    	e.preventDefault();
+
+	    // isolate the phone_number_input field so it can be submitted via AJAX to the Ruby backend
+	    var post_data = {number: $('#participant_input').val()};
+	    
+	    // send the AJAX request using jQuery's HTTP POST function
+	    var ajax_request = $.post('/dialparticipant', post_data);
+
+	    return false;
+    	});
     });
 
     </script>
 	</head>
 	<body>
- 
+
+		<h1><%= @twilionumber %></h1>
+
 		<button class="call" onclick="call();">
 			Call
 		</button>
@@ -72,13 +87,13 @@
   
 		<div id="log">Loading pigeons...</div>
 
-		<form class="input" id="participant_form" action="/dialparticipant" method="post">
-			<input type="text" id="participant_input" name= "number" placeholder="Participant Number&hellip;">
+		<form class="input" id="participant_form" action="/dialparticipant" method="post" style="width: 466;">
+			<input class="well" type="text" id="participant_input" name= "number" placeholder="Participant Number&hellip;">
 			<button class="call">Call</button>
 		</form>
 
 		<form class="input" id="listener_form" method="post">
-			<input type="text" id="listener_input" name= "number" placeholder="Listener Number&hellip;">
+			<input class="well" type="text" id="listener_input" name= "number" placeholder="Listener Number&hellip;">
 			<button class="call">Call</button>
 		</form>
 	</body>

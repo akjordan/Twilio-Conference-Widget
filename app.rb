@@ -28,12 +28,11 @@ end
 get_or_post '/' do
   #protected!
 
-  Thin::Logging::log "message"
-
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
   TWILIO_APP_SID = ENV['TWILIO_APP_SID'] || TWILIO_APP_SID
-  
+  TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
+
   if !(TWILIO_ACCOUNT_SID && TWILIO_AUTH_TOKEN && TWILIO_APP_SID)
     return "Please run configure.rb before trying to do this!"
   end
@@ -42,6 +41,7 @@ get_or_post '/' do
   capability.allow_client_outgoing(TWILIO_APP_SID)
   capability.allow_client_incoming('twilioRubyHackpack')
   @token = capability.generate
+  @twilionumber = TWILIO_CALLER_ID
   erb :client
 end
 
@@ -71,7 +71,6 @@ end
 # Dials in a caller as a particpant
 get_or_post '/participant' do
   response = Twilio::TwiML::Response.new do |r|
-    r.Say 'You are entering the Twilio Sales Conference'
     r.Dial do |d|
       d.Conference 'democonference', :startConferenceOnEnter => 'false', :beep => 'true' 
     end
@@ -101,8 +100,6 @@ TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
 
 @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-puts request.base_url << "/participant"
-
 @account = @client.account
 @call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/participant"})
 puts @call
@@ -118,8 +115,6 @@ TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
 TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
 
 @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-
-puts request.base_url << "/listener"
 
 @account = @client.account
 @call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/listener"})
