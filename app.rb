@@ -72,7 +72,7 @@ end
 get_or_post '/participant' do
   response = Twilio::TwiML::Response.new do |r|
     r.Dial do |d|
-      d.Conference 'democonference', :startConferenceOnEnter => 'false', :beep => 'true' 
+      d.Conference 'democonference', :startConferenceOnEnter => 'false', :beep => 'false' 
     end
   end
   response.text
