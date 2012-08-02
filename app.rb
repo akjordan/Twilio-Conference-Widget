@@ -26,7 +26,7 @@ end
 
 # Base URL
 get_or_post '/' do
-  #protected!
+  protected!
 
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
