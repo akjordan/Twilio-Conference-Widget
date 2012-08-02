@@ -2,11 +2,20 @@ body {
   background: url(http://static0.twilio.com/packages/quickstart/whitey.png) center top repeat;
 }
 
- button.call, button.hangup{
-    margin: 0 0 0 0;
-    float: center;
+.container {
+	width: 45%;
+    margin: 0px auto;
+    padding-top: 5%;
 }
 
-.input .well{
-    width: 250px;
+input {
+	display: inline;
+}
+
+button.call, button.hangup{
+    margin: 0;
+}
+
+.well{
+    width: 50%;
 }

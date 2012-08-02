@@ -75,26 +75,30 @@
     </script>
 	</head>
 	<body>
+		<div class="container">
+			<h2>Your Conference Number:</h2>
+			<h1><%= @twilionumber %></h1>
 
-		<h1><%= @twilionumber %></h1>
+			<button class="call" onclick="call();">
+				Call
+			</button>
 
-		<button class="call" onclick="call();">
-			Call
-		</button>
-		<button class="hangup" onclick="hangup();">
-			Hangup
-		</button>
-  
-		<div id="log">Loading pigeons...</div>
+			<button class="hangup" onclick="hangup();">
+				Hangup
+			</button>
+	  
+			<div id="log">Loading pigeons...</div>
 
-		<form class="input" id="participant_form" action="/dialparticipant" method="post" style="width: 466;">
-			<input class="well" type="text" id="participant_input" name= "number" placeholder="Participant Number&hellip;">
-			<button class="call">Call</button>
-		</form>
+			<form class="input" id="participant_form" action="/dialparticipant" method="post" style="width: 466;">
+				<input class="well" type="text" id="participant_input" name= "number" placeholder="Participant Number&hellip;">
+				<button class="call">Call</button>
+			</form>
 
-		<form class="input" id="listener_form" method="post">
-			<input class="well" type="text" id="listener_input" name= "number" placeholder="Listener Number&hellip;">
-			<button class="call">Call</button>
-		</form>
+
+			<form class="input" id="listener_form" method="post">
+				<input class="well" type="text" id="listener_input" name= "number" placeholder="Listener Number&hellip;">
+				<button class="call">Call</button>
+			</form>
+		</div>
 	</body>
 </html>
