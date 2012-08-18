@@ -39,7 +39,6 @@ get_or_post '/' do
   @title = "Conference Line"
   capability = Twilio::Util::Capability.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
   capability.allow_client_outgoing(TWILIO_APP_SID)
-  capability.allow_client_incoming('twilioRubyHackpack')
   @token = capability.generate
   @twilionumber = TWILIO_CALLER_ID
   erb :client
