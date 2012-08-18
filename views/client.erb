@@ -64,7 +64,8 @@
 
 	    // isolate the phone_number_input field so it can be submitted via AJAX to the Ruby backend
 	    var post_data = {number: $('#participant_input').val()};
-	    
+	    var post_data = {mute: $('#mute').val()};
+
 	    // send the AJAX request using jQuery's HTTP POST function
 	    var ajax_request = $.post('/dialparticipant', post_data);
 
@@ -90,13 +91,17 @@
 			<div id="log">Loading pigeons...</div>
 
 			<form class="input" id="participant_form" action="/dialparticipant" method="post" style="width: 466;">
-				<input class="well" type="text" id="participant_input" name= "number" placeholder="Participant Number&hellip;">
+				<select id="mute" name="muted">
+					<option value="unmuted" selected>Unmuted</option>
+					<option value="muted">Muted</option>
+				</select>
+				<input class="well" type="text" id="participant_input" name="number" placeholder="Participant Number&hellip;">
 				<button class="call">Call</button>
 			</form>
 
 
 			<form class="input" id="listener_form" method="post">
-				<input class="well" type="text" id="listener_input" name= "number" placeholder="Listener Number&hellip;">
+				<input class="well" type="text" id="listener_input" name="number" placeholder="Listener Number&hellip;">
 				<button class="call">Call</button>
 			</form>
 		</div>

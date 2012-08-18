@@ -26,7 +26,7 @@ end
 
 # Base URL
 get_or_post '/' do
-  protected!
+  #protected!
 
   TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
@@ -52,8 +52,9 @@ get_or_post '/voice' do
     response = Twilio::TwiML::Response.new do |r|
       r.Say 'You are entering the Twilio Sales Conference as a Moderator'
       r.Dial do |d|
-        d.Conference 'democonference', :startConferenceOnEnter => 'true', :beep => 'true', \
-                      :endConferenceOnExit => 'true' 
+        d.Conference 'democonference', :startConferenceOnEnter => 'true',\
+                      :endConferenceOnExit => 'true',\
+                      :waitUrl => 'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
       end
     end
   
@@ -61,7 +62,7 @@ get_or_post '/voice' do
     response = Twilio::TwiML::Response.new do |r|
       r.Say 'You are entering the Twilio Sales Conference'
       r.Dial do |d|
-        d.Conference 'democonference', :startConferenceOnEnter => 'false', :beep => 'true' 
+        d.Conference 'democonference', :startConferenceOnEnter => 'false' 
       end
     end
   end
@@ -91,8 +92,11 @@ get_or_post '/listener' do
 end
 
 # Makes an API call to bring in a particpant
+# need to pass the mute flag from this route into the TWIML route via an arguemnt added to the URL
 post '/dialparticipant' do
 #protected!
+
+puts params[:mute]
 
 TWILIO_ACCOUNT_SID = ENV['TWILIO_ACCOUNT_SID'] || TWILIO_ACCOUNT_SID
 TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN'] || TWILIO_AUTH_TOKEN
