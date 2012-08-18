@@ -102,5 +102,4 @@ TWILIO_CALLER_ID = ENV['TWILIO_CALLER_ID'] || TWILIO_CALLER_ID
 @account = @client.account
 @call = @account.calls.create({:from => TWILIO_CALLER_ID, :to => params[:number], :url => request.base_url << "/" << params[:mute]})
 puts @call
-
 end

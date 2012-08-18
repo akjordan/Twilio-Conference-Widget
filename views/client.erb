@@ -50,12 +50,8 @@
 	    $('#participant_form').submit(function(e) {
     	e.preventDefault();
 
-	    // isolate the phone_number_input field so it can be submitted via AJAX to the Ruby backend
-	    var post_data = {number: $('#participant_input').val()};
-	    var post_data = {mute: $('#mute').val()};
-
 	    // send the AJAX request using jQuery's HTTP POST function
-	    var ajax_request = $.post('/dialparticipant', post_data);
+	    var ajax_request = $.post('/dialparticipant', {number: $('#participant_input').val(), mute: $('#mute').val()});
 
 	    return false;
     	});
