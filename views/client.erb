@@ -51,8 +51,8 @@
     	e.preventDefault();
 
 	    // send the AJAX request using jQuery's HTTP POST function
-	    var ajax_request = $.post('/dialparticipant', {number: $('#participant_input').val(), mute: $('#mute').val()});
-
+	    var ajax_request = $.post('/dialparticipant', {number: $('#participant_input').val(), mute: $('#mute').val()}, $("#log").text("Call placed"));
+	    
 	    return false;
     	});
     });

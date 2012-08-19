@@ -24,7 +24,7 @@ helpers do
 
 end
 
-# Base URL
+# Base URL that presents UI and Twilio Client
 get_or_post '/' do
   #protected!
 
